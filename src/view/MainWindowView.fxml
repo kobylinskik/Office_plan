@@ -8,7 +8,7 @@
 <?import javafx.scene.control.TextField?>
 <?import javafx.scene.layout.AnchorPane?>
 
-<AnchorPane fx:id="anchorPane" prefHeight="511.0" prefWidth="761.0" xmlns="http://javafx.com/javafx/8.0.141" xmlns:fx="http://javafx.com/fxml/1" fx:controller="controller.MainWindowController">
+<AnchorPane fx:id="anchorPane" prefHeight="421.0" prefWidth="822.0" xmlns="http://javafx.com/javafx/8.0.141" xmlns:fx="http://javafx.com/fxml/1" fx:controller="controller.MainWindowController">
    <children>
       <TableView fx:id="dataTable" layoutX="140.0" layoutY="3.0" onMouseClicked="#selectEmployee" prefHeight="200.0" prefWidth="223.0">
         <columns>
@@ -17,8 +17,8 @@
             <TableColumn fx:id="roomColumn" prefWidth="75.0" text="pokoj" />
         </columns>
       </TableView>
-      <Button fx:id="loadButton" layoutX="22.0" layoutY="30.0" mnemonicParsing="false" onAction="#loadData" text="wczytaj" />
-      <Button fx:id="addButton" layoutX="28.0" layoutY="116.0" mnemonicParsing="false" onAction="#addData" text="dodaj" />
+      <Button fx:id="loadButton" layoutX="22.0" layoutY="30.0" mnemonicParsing="false" onAction="#handleLoadButton" text="wczytaj" />
+      <Button fx:id="addButton" layoutX="28.0" layoutY="116.0" mnemonicParsing="false" onAction="#handleAddButton" text="dodaj" />
       <Label fx:id="nameLabel" layoutX="393.0" layoutY="25.0" text="Imie" />
       <Label fx:id="surnameLabel" layoutX="392.0" layoutY="82.0" text="Nazwisko" />
       <Label fx:id="roomLabel" layoutX="393.0" layoutY="141.0" text="nr pokoju" />
@@ -29,8 +29,8 @@
       <TextField fx:id="roomField" layoutX="363.0" layoutY="157.0" />
       <TextField fx:id="startField" layoutX="567.0" layoutY="43.0" />
       <TextField fx:id="finishField" layoutX="567.0" layoutY="103.0" />
-      <Button fx:id="saveButton" layoutX="25.0" layoutY="77.0" mnemonicParsing="false" onAction="#saveData" text="zapisz" />
-      <Button fx:id="reportButton" layoutX="24.0" layoutY="157.0" mnemonicParsing="false" onAction="#createReport" text="raport" />
-      <Canvas fx:id="officePlan" height="294.0" layoutX="374.0" layoutY="192.0" width="365.0" />
+      <Button fx:id="saveButton" layoutX="25.0" layoutY="77.0" mnemonicParsing="false" onAction="#handleSaveButton" text="zapisz" />
+      <Button fx:id="reportButton" layoutX="24.0" layoutY="157.0" mnemonicParsing="false" onAction="#handleReportButton" text="raport" />
+      <Canvas fx:id="officePlan" height="200.0" layoutX="374.0" layoutY="192.0" width="400.0" />
    </children>
 </AnchorPane>

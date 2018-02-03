@@ -35,108 +35,45 @@ public class MainWindowController {
 				
 	private Main main;	
 	private CanvasController canvasController;
-	private ObservableList<Employee> employeeList = FXCollections.observableArrayList();
+	private DataController dataController;
 		
+	//Ustawia main dla kontrolera okna głównego, tworzy również kontrolery dla canvas i danych w tabeli
 	public void setMain(Main main) {
 		this.main = main;
+		dataController = new DataController(dataTable, nameColumn, surnameColumn, roomColumn);
 		canvasController = new CanvasController(officePlan);
 		canvasController.fillCanvas();
+		canvasController.drawAllRooms();
 	}
-	
-	public void setColumns() {
-		nameColumn.setCellValueFactory(new PropertyValueFactory<>("name"));
-		surnameColumn.setCellValueFactory(new PropertyValueFactory<>("surname"));
-		roomColumn.setCellValueFactory(new PropertyValueFactory<>("room"));		
-	}	
-	
-	public void loadData() {
-		Scanner input = null;
-		String name;
-		String surname;
-		int room;
-		int timeStarted;
-		int timeFinished;
-		try {
-			input = new Scanner(Paths.get("/home/kk/Documents/pracownicy.txt"));
-			while(input.hasNext()) {
-				name = input.next();
-				surname = input.next();
-				room = input.nextInt();
-				timeStarted = input.nextInt(); 
-				timeFinished = input.nextInt();
-				employeeList.add(new Employee(name, surname, room, timeStarted, timeFinished));
-			}
-		} catch(IOException e) {
-			e.printStackTrace();
-		} finally {
-			if(input != null) {
-				input.close();
-			}
-		}
-		dataTable.setItems(employeeList);
-	}
-	
-	public void saveData() {
-		PrintWriter output = null;
-		try {
-			output = new PrintWriter("/home/kk/Documents/pracownicy.txt");
-			for(int i = 0; i < employeeList.size(); i++) {
-				output.println(employeeList.get(i).toString());
-			}			
-		} catch (IOException e) {
-			e.printStackTrace();
-		} finally {
-			if(output != null)
-				output.close();
-		}
 		
+	//Ładuje dane do tabeli po naciśnięciu przycisku Wczytaj
+	public void handleLoadButton() {
+		dataController.openDataFile();
+		dataController.loadData();
 	}
 	
-	public void addData() {
-		employeeList.add(new Employee(nameField.getText(), 
+	//Zapisuje dane do pliku po naciśnięciu przycisku Zapisz
+	public void handleSaveButton() {
+		dataController.saveData();
+	}
+	
+	//Tworzy obiekt pracownika o danych z pól tekstowych, dodaje jego dane do tabeli
+	public void handleAddButton() {
+		dataController.addData(nameField.getText(), 
 				surnameField.getText(), 
 				Integer.parseInt(roomField.getText()), 
-				Integer.parseInt(startField.getText()), Integer.parseInt(finishField.getText())));
-		dataTable.setItems(employeeList);
+				Integer.parseInt(startField.getText()), Integer.parseInt(finishField.getText()));
 	}
 	
-	public void createReport() {
-		String reportPath = createReportPath();
-		createReportFile(reportPath);
-		writeReportData(reportPath);		
-	}
+	//Tworzy raport po naciśnięciu przycisku Raport
+	public void handleReportButton() {
+		dataController.createReport();
+	}	
 	
-	private String createReportPath() {
-		Date today = new Date();
-		SimpleDateFormat dateFormat = new SimpleDateFormat("dd_MM_yyyy");	
-		return "/home/kk/Documents/raport_" + dateFormat.format(today);
-	}
-	
-	private void createReportFile(String reportPath) {	 
-		try {						
-			File report = new File(reportPath);
-			report.createNewFile();
-		} catch (IOException e) {
-			e.printStackTrace();
-		}
-	}
-	
-	private void writeReportData(String reportPath) {
-		PrintWriter output = null;
-		try {
-			output = new PrintWriter(reportPath);
-			for(int i = 0; i < employeeList.size(); i++) {
-				output.println(employeeList.get(i).toString());
-			}			
-		} catch (IOException e) {
-			e.printStackTrace();
-		} finally {
-			if(output != null)
-				output.close();
-		}
-	}
-	
-	public void selectEmployee() {		  
+	//Podświetla pokój pracownika po zaznaczeniu go w tabeli
+	public void selectEmployee() {	
+		canvasController.fillCanvas();
+		canvasController.drawAllRooms();
 		canvasController.fillRoom(dataTable.getSelectionModel().getSelectedItem().getRoom());
 	}
 }
